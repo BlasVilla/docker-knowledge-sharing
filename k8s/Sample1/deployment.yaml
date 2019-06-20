@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-deployment
+  namespace: anwb-playground
+  labels:
+    app: microservice
+
+spec:
+  template:
+    metadata:
+      labels:
+        app: microservice
+    spec:
+      containers:
+      - name: microservice
+        image: <image name>:<image tag>
+        ports:
+        - name: http
+          containerPort: 80
+        env:
+        - name: Logging__LogLevel__Default
+          value: Warning
+        - name: Logging__LogLevel__System
+          value: Warning
+        - name: Logging__LogLevel__Microsoft
+          value: Warning

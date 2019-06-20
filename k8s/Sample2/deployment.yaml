@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-deployment
+  namespace: anwb-playground
+  labels:
+    app: microservice
+
+spec:
+  template:
+    metadata:
+      labels:
+        app: microservice
+    spec:
+      containers:
+      - name: microservice
+        image: <image name>:<image tag>
+        ports:
+        - name: http
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /self
+            port: http
+          initialDelaySeconds: 20
+          periodSeconds: 5
+          timeoutSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 2
+        env:
+        - name: Logging__LogLevel__Default
+          value: Warning
+        - name: Logging__LogLevel__System
+          value: Warning
+        - name: Logging__LogLevel__Microsoft
+          value: Warning
+        - name: Database__Provider
+          valueFrom:
+            configMapKeyRef:
+              name: microservice-db-config
+              key: provider
+        - name: Database__ConnectionString
+          valueFrom:
+            secretKeyRef:
+              name: microservice-db-secret
+              key: connectionString
