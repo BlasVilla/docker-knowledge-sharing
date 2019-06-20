@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: microservice-migrations-job
+  namespace: anwb-playground
+  labels:
+    app: microservice-migrations-job
+
+spec:
+  template:
+    spec:
+      containers:
+      - name: db-migrations-job
+        image: <image name>:<image tag>
